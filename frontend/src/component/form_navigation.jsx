@@ -27,7 +27,7 @@ const FormNavigation = ({ onNext, onBack, canProceed }) => (
     </Button>
     <Button 
      variant="contained"
-     onClick={onBack}
+     onClick={onNext}
      disabled={canProceed === 1}
     //  color="secondary"
      sx={{ 
