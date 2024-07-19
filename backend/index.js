@@ -1,10 +1,15 @@
 const express = require('express');
 const app = express();
+const cors = require('cors');
+
 require('dotenv').config();
 const vehicleRoutes = require('./route/vehicleRouter');
 const bookingRoutes = require('./route/bookingRoute');
 const sequelize = require('./config/sequelize');
 
+
+// Allow requests from any origin
+app.use(cors());
 
 // Middleware
 app.use(express.json()); // For parsing application/json
