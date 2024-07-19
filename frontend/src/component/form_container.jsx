@@ -5,6 +5,7 @@ import { Box } from "@mui/material";
 import WheelsRadio from "./wheel_radio";
 import VehicleTypeRadio from "./vehicle_type";
 import { FormContext } from "../context/vehicle_context";
+import VehicleModelRadio from "./vehicle_model";
 
 
 const FormContainer = () => {
@@ -51,8 +52,14 @@ const FormContainer = () => {
         await fetchVehicleTypes(value)
       };
 
+     
       const handleSelectType = async (id) => {
         setSelectedType(id);
+        await fetchVehicleModels(id);
+      };
+    
+      const handleSelectModel = (id) => {
+        setSelectedModel(id);
       };
 
     const handleNext = () => {
@@ -66,9 +73,13 @@ const FormContainer = () => {
           else if (step === 3 && selectedType) {
              
 
-            if (vehicleModels.length > 0) {
+            // if (vehicleModels.length > 0) {
               setStep(step + 1);
-            }
+            // }
+          }
+          else if (step === 4 && selectedModel) {
+            
+            setStep(step + 1);
           }
         else {
             alert('Please fill out all fields before proceeding.');
@@ -89,7 +100,10 @@ const FormContainer = () => {
                     return <WheelsRadio selectedWheels={selectedWheels} onSelectWheels={handleSelectWheels} />;
                     case 3:
         return <VehicleTypeRadio vehicleTypes={vehicleTypes} selectedType={selectedType} onSelectType={handleSelectType} />;
-                default:
+                
+        case 4:
+            return <VehicleModelRadio vehicleModels={vehicleModels} selectedModel={selectedModel} onSelectModel={handleSelectModel} />;        
+        default:
                 return null;
         }
     };

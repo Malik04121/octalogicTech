@@ -15,6 +15,8 @@ const FormProvider = ({ children }) => {
   const [selectedWheels, setSelectedWheels] = useState('');
   const [vehicleTypes, setVehicleTypes] = useState([]);
   const [selectedType, setSelectedType] = useState('');
+  const [vehicleModels, setVehicleModels] = useState([]);
+  const [selectedModel, setSelectedModel] = useState('');
  
   const [step, setStep] = useState(1);
  
@@ -32,6 +34,15 @@ const FormProvider = ({ children }) => {
         console.error('Error fetching vehicle types:', error);
       }
     };
+    const fetchVehicleModels = async (typeId) => {
+      try {
+        const response = await axios.get(`${baseUrl}/api/vehicles/${typeId}`); // Replace with your actual API endpoint
+        console.log(response,"response after type");
+        setVehicleModels(response.data.vehicles);
+      } catch (error) {
+        console.error('Error fetching vehicle models:', error);
+      }
+    };
 
   return (
     <FormContext.Provider
@@ -42,12 +53,17 @@ const FormProvider = ({ children }) => {
         vehicleTypes,
         selectedType,
         step,
+        vehicleModels,
+        selectedModel,
         setFirstName,
         setLastName,
         setSelectedWheels,
         setSelectedType,
+        setVehicleModels,
+        setSelectedModel,
         setStep,
-        fetchVehicleTypes
+        fetchVehicleTypes,
+        fetchVehicleModels
       }}
     >
       {children}
