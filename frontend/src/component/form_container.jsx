@@ -6,6 +6,8 @@ import WheelsRadio from "./wheel_radio";
 import VehicleTypeRadio from "./vehicle_type";
 import { FormContext } from "../context/vehicle_context";
 import VehicleModelRadio from "./vehicle_model";
+import BasicDateRangePicker from "./date_range";
+import DateRangePickerValue from "./date_range";
 
 
 const FormContainer = () => {
@@ -29,9 +31,35 @@ const FormContainer = () => {
         setEndDate,
         setStep,
         fetchVehicleModels,
-        fetchVehicleTypes
+        fetchVehicleTypes,
+        submitFormData
       } = useContext(FormContext);
-
+    // const {
+    //     firstName,
+    //     lastName,
+    //     selectedWheels,
+    //     vehicleTypes,
+    //     selectedType,
+    //     vehicleModels,
+    //     selectedModel,
+    //     startDate,
+    //     endDate,
+    //     step,
+    //     setFirstName,
+    //     setLastName,
+    //     setSelectedWheels,
+    //     setSelectedType,
+    //     setSelectedModel,
+    //     setStartDate,
+    //     setEndDate,
+    //     setStep,
+    //     fetchVehicleModels,
+    //     fetchVehicleTypes
+    //   } = useContext(FormContext);
+      const [dateRange, setDateRange] = useState({
+        startDate: new Date(),
+        endDate: new Date().setMonth(11)
+      });
 
     // const [step, setStep] = useState(1);
     // const [firstName, setFirstName] = useState('');
@@ -61,8 +89,16 @@ const FormContainer = () => {
       const handleSelectModel = (id) => {
         setSelectedModel(id);
       };
+      const handleDateRangeChange = (newRange) => {
+ console.log(newRange,"newRange");
+        // setDateRange(newRange);
+        setDateRange({
+            startDate: newRange[0],
+            endDate: newRange[1]
+        });
+      };
 
-    const handleNext = () => {
+    const handleNext = async() => {
         if (step === 1 && firstName && lastName) {
             setStep(step + 1);
 
@@ -70,17 +106,25 @@ const FormContainer = () => {
         else if (step === 2 && selectedWheels) {
             setStep(step + 1);
           }
-          else if (step === 3 && selectedType) {
-             
-
-            // if (vehicleModels.length > 0) {
+          else if (step === 3 && selectedType) {    
               setStep(step + 1);
-            // }
           }
           else if (step === 4 && selectedModel) {
             
             setStep(step + 1);
           }
+          else if (step === 5 && dateRange.startDate && dateRange.endDate) {
+            const formData = {
+                firstName,
+                lastName,
+                vehicleId:selectedModel,
+                startDate: dateRange.startDate.toISOString(), // Convert to ISO string
+                endDate: dateRange.endDate.toISOString() 
+              };
+              await submitFormData(formData)
+             
+          setStep(1); // Reset form 
+        }
         else {
             alert('Please fill out all fields before proceeding.');
         }
@@ -103,14 +147,19 @@ const FormContainer = () => {
                 
         case 4:
             return <VehicleModelRadio vehicleModels={vehicleModels} selectedModel={selectedModel} onSelectModel={handleSelectModel} />;        
-        default:
+            case 5:
+                return <DateRangePickerValue value={dateRange} onChange={handleDateRangeChange} />
+                // return   <BasicDateRangePicker
+                // value={dateRange}
+                // onChange={handleDateRangeChange} />;
+            default:
                 return null;
         }
     };
 
     return (
 
-        <Box width={500} p={5}
+        <Box width="100%" p={5}
             bgcolor="#f0f0f0"
             borderRadius={2}
             boxShadow={3}

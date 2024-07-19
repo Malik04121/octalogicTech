@@ -17,6 +17,8 @@ const FormProvider = ({ children }) => {
   const [selectedType, setSelectedType] = useState('');
   const [vehicleModels, setVehicleModels] = useState([]);
   const [selectedModel, setSelectedModel] = useState('');
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
  
   const [step, setStep] = useState(1);
  
@@ -43,6 +45,23 @@ const FormProvider = ({ children }) => {
         console.error('Error fetching vehicle models:', error);
       }
     };
+    const submitFormData = async (formData) => {
+      try {
+        const response = await axios.post(`${baseUrl}/api/bookings`, formData, {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+        
+        // Handle the response
+        console.log('Response from server:', response.data);
+        
+        // Optionally, handle any success actions or state updates here
+      } catch (error) {
+        // Handle errors
+        console.error('Error submitting form data:', error);
+      }
+    };
 
   return (
     <FormContext.Provider
@@ -55,6 +74,8 @@ const FormProvider = ({ children }) => {
         step,
         vehicleModels,
         selectedModel,
+        startDate,
+        endDate,
         setFirstName,
         setLastName,
         setSelectedWheels,
@@ -62,8 +83,11 @@ const FormProvider = ({ children }) => {
         setVehicleModels,
         setSelectedModel,
         setStep,
+        setStartDate,
+        setEndDate,
         fetchVehicleTypes,
-        fetchVehicleModels
+        fetchVehicleModels,
+        submitFormData
       }}
     >
       {children}

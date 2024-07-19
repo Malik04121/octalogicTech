@@ -14,14 +14,14 @@ const NameInput = ({ firstName, lastName, onFirstNameChange, onLastNameChange })
           required
           id="outlined-required"
           label="First Name"
-          defaultValue="First Name"
+          // defaultValue="First Name"
           value={firstName} onChange={onFirstNameChange}
         />
         <TextField
           required
           id="outlined-required"
           label="Last Name"
-          defaultValue="First Name"
+          // defaultValue="First Name"
           value={lastName} onChange={onLastNameChange}
         />
      
