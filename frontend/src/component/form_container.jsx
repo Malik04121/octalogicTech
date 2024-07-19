@@ -1,15 +1,41 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import FormNavigation from "./form_navigation";
 import NameInput from "./name_input";
 import { Box } from "@mui/material";
 import WheelsRadio from "./wheel_radio";
+import VehicleTypeRadio from "./vehicle_type";
+import { FormContext } from "../context/vehicle_context";
 
 
 const FormContainer = () => {
-    const [step, setStep] = useState(1);
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
-  const [selectedWheels, setSelectedWheels] = useState('');
+    const {
+        firstName,
+        lastName,
+        selectedWheels,
+        vehicleTypes,
+        selectedType,
+        vehicleModels,
+        selectedModel,
+        startDate,
+        endDate,
+        step,
+        setFirstName,
+        setLastName,
+        setSelectedWheels,
+        setSelectedType,
+        setSelectedModel,
+        setStartDate,
+        setEndDate,
+        setStep,
+        fetchVehicleModels,
+        fetchVehicleTypes
+      } = useContext(FormContext);
+
+
+    // const [step, setStep] = useState(1);
+    // const [firstName, setFirstName] = useState('');
+    // const [lastName, setLastName] = useState('');
+//   const [selectedWheels, setSelectedWheels] = useState('');
 
 
     const handleFirstNameChange = (event) => {
@@ -22,6 +48,11 @@ const FormContainer = () => {
 
     const handleSelectWheels = async(value) => {
         setSelectedWheels(value);
+        await fetchVehicleTypes(value)
+      };
+
+      const handleSelectType = async (id) => {
+        setSelectedType(id);
       };
 
     const handleNext = () => {
@@ -31,6 +62,13 @@ const FormContainer = () => {
         }
         else if (step === 2 && selectedWheels) {
             setStep(step + 1);
+          }
+          else if (step === 3 && selectedType) {
+             
+
+            if (vehicleModels.length > 0) {
+              setStep(step + 1);
+            }
           }
         else {
             alert('Please fill out all fields before proceeding.');
@@ -49,6 +87,8 @@ const FormContainer = () => {
                 return <NameInput firstName={firstName} lastName={lastName} onFirstNameChange={handleFirstNameChange} onLastNameChange={handleLastNameChange} />;
                 case 2:
                     return <WheelsRadio selectedWheels={selectedWheels} onSelectWheels={handleSelectWheels} />;
+                    case 3:
+        return <VehicleTypeRadio vehicleTypes={vehicleTypes} selectedType={selectedType} onSelectType={handleSelectType} />;
                 default:
                 return null;
         }
