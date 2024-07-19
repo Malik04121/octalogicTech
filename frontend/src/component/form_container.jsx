@@ -72,7 +72,7 @@ const FormContainer = () => {
         >
             <h2>Booking Form - Step {step}</h2>
             {renderStepContent()}
-            <FormNavigation onNext={handleNext} onBack={handleBack} canProceed={step === 1 || step === 2 || step === 3 || step === 4 || step === 5} />
+            <FormNavigation onNext={handleNext} onBack={handleBack} step={step}  />
         </Box>
     )
 
