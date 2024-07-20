@@ -1,7 +1,9 @@
 import React from 'react';
-import { Box, Button } from '@mui/material';
+import { Box, Button, useMediaQuery, useTheme } from '@mui/material';
 
 const FormNavigation = ({ onNext, onBack, step }) => {
+    const theme = useTheme();
+    const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
     return (
         <Box 
             mt={4} 
@@ -31,7 +33,7 @@ const FormNavigation = ({ onNext, onBack, step }) => {
                     sx={{ 
                         px: 3, 
                         py: 1, 
-                        minWidth: 100,
+                        minWidth: isSmallScreen ? 'auto' : 100,
                         borderRadius: 1,
                         fontSize: '0.875rem',
                         width: '100%'
@@ -47,7 +49,7 @@ const FormNavigation = ({ onNext, onBack, step }) => {
                     sx={{ 
                         px: 3, 
                         py: 1, 
-                        minWidth: 100,
+                        minWidth: isSmallScreen ? 'auto' : 100,
                         borderRadius: 1,
                         fontSize: '0.875rem',
                     }}
@@ -62,7 +64,7 @@ const FormNavigation = ({ onNext, onBack, step }) => {
                     sx={{ 
                         px: 3, 
                         py: 1, 
-                        minWidth: 100,
+                        minWidth: isSmallScreen ? 'auto' : 100,
                         borderRadius: 1,
                         fontSize: '0.875rem',
                         width: '100%'

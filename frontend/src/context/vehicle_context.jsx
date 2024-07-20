@@ -21,31 +21,41 @@ const FormProvider = ({ children }) => {
   const [endDate, setEndDate] = useState(null);
  
   const [step, setStep] = useState(1);
+  const [loading, setLoading] = useState(false);
  
   const baseUrl=import.meta.env.VITE_BASE_URL;
  
 
   // useEffect(() => {
     const fetchVehicleTypes = async (category) => {
+      setLoading(true);
       try {
-        console.log("inside fetch",category);
+       
         const response = await axios.get(`${baseUrl}/api/vehicleType/${category}`); // Replace with your actual API endpoint
-       console.log(response,"data")
+     
         setVehicleTypes(response.data.vehicleTypes);
       } catch (error) {
         console.error('Error fetching vehicle types:', error);
       }
+      finally {
+        setLoading(false);
+      }
     };
     const fetchVehicleModels = async (typeId) => {
+      setLoading(true);
       try {
         const response = await axios.get(`${baseUrl}/api/vehicles/${typeId}`); // Replace with your actual API endpoint
-        console.log(response,"response after type");
+     
         setVehicleModels(response.data.vehicles);
       } catch (error) {
         console.error('Error fetching vehicle models:', error);
       }
+      finally {
+        setLoading(false);
+      }
     };
     const submitFormData = async (formData) => {
+      setLoading(true);
       try {
         const response = await axios.post(`${baseUrl}/api/bookings`, formData, {
           headers: {
@@ -53,13 +63,22 @@ const FormProvider = ({ children }) => {
           }
         });
         
-        // Handle the response
-        console.log('Response from server:', response.data);
         
         // Optionally, handle any success actions or state updates here
       } catch (error) {
-        // Handle errors
-        console.error('Error submitting form data:', error);
+        if (error.response) {
+          // Check for specific error code or message
+          if (error.response.status === 400 ) {
+            throw new Error('Cannot book on the same date. Please choose a different date.');
+          } else {
+            throw new Error('Failed to submit booking. Please try again.');
+          }
+        } else {
+          throw new Error('An unexpected error occurred. Please try again later.');
+        }
+      }
+      finally {
+        setLoading(false);
       }
     };
 
@@ -76,6 +95,7 @@ const FormProvider = ({ children }) => {
         selectedModel,
         startDate,
         endDate,
+        loading,
         setFirstName,
         setLastName,
         setSelectedWheels,
