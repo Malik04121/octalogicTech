@@ -5,6 +5,7 @@ const NameInput = ({ firstName, lastName, onFirstNameChange, onLastNameChange })
   return (
     <Box 
     // display="grid" 
+    mt={4}
     gap={2}
      display="flex"
             flexDirection="column"

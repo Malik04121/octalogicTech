@@ -159,7 +159,7 @@ const FormContainer = () => {
 
     return (
 
-        <Box width="100%" p={5}
+        <Box width="30%" p={5}
             bgcolor="#f0f0f0"
             borderRadius={2}
             boxShadow={3}
@@ -173,7 +173,7 @@ const FormContainer = () => {
             mt={5}
 
         >
-            <h2>Booking Form - Step {step}</h2>
+            <h1 mb={4}>Booking Form - Step {step}</h1>
             {renderStepContent()}
             <FormNavigation onNext={handleNext} onBack={handleBack} step={step}  />
         </Box>
